@@ -2,39 +2,50 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Untuk Kamu ❤️</title>
 
+<!-- FONT -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
+
 <style>
+/* ===== RESET ===== */
+* {
+  box-sizing: border-box;
+}
+
+/* ===== BODY ===== */
 body {
   margin: 0;
   height: 100vh;
-  background: radial-gradient(circle at bottom, #020617, #0f172a);
+  background: radial-gradient(circle at bottom, #020617, #0b1026);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Arial', sans-serif;
+  font-family: 'Playfair Display', serif;
   overflow: hidden;
 }
 
-/* ===== BACKGROUND FIREWORKS ===== */
-.firework-bg {
+/* ===== FIREWORK BACKGROUND ===== */
+.fireworks {
   position: fixed;
   inset: 0;
   pointer-events: none;
+  z-index: 1;
 }
 
-.firework-bg span {
+.fireworks span {
   position: absolute;
   width: 6px;
   height: 6px;
-  background: hsl(var(--h),100%,70%);
   border-radius: 50%;
+  background: hsl(var(--h), 100%, 70%);
   animation: explode 2s ease-out infinite;
 }
 
 @keyframes explode {
   from { transform: scale(0); opacity: 1; }
-  to { transform: scale(8); opacity: 0; }
+  to { transform: scale(7); opacity: 0; }
 }
 
 /* ===== ENVELOPE ===== */
@@ -42,24 +53,23 @@ body {
   position: relative;
   width: 320px;
   height: 210px;
-  cursor: pointer;
   perspective: 1000px;
+  cursor: pointer;
   z-index: 5;
 }
 
 .env-back {
   position: absolute;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, #fde2e4, #fadadd);
-  border-radius: 10px;
+  inset: 0;
+  background: linear-gradient(135deg, #fff1f2, #ffe4e6);
+  border-radius: 14px;
   z-index: 1;
 }
 
 .env-front {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, #fbcfe8, #fda4af);
+  background: linear-gradient(135deg, #fda4af, #fb7185);
   clip-path: polygon(0 0, 50% 60%, 100% 0, 100% 100%, 0 100%);
   z-index: 3;
 }
@@ -67,7 +77,7 @@ body {
 .env-flap {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, #fda4af, #fb7185);
+  background: linear-gradient(135deg, #fb7185, #e11d48);
   clip-path: polygon(0 0, 50% 60%, 100% 0);
   transform-origin: top;
   transition: transform 1s ease;
@@ -82,18 +92,18 @@ body {
 .paper {
   position: absolute;
   width: 280px;
-  height: 180px;
-  background: #fffafc;
+  min-height: 170px;
+  background: #fffaf7;
   top: 15px;
   left: 20px;
-  padding: 20px;
-  box-sizing: border-box;
+  padding: 22px;
   text-align: center;
   opacity: 0;
   transform: translateY(50px);
   transition: all 1s ease;
   z-index: 2;
-  box-shadow: 0 15px 30px rgba(0,0,0,.25);
+  border-radius: 6px;
+  box-shadow: 0 18px 30px rgba(0,0,0,0.25);
 }
 
 .envelope.open .paper {
@@ -103,9 +113,9 @@ body {
 }
 
 .message {
-  color: #881337;
-  font-size: 16px;
-  line-height: 1.6;
+  color: #7f1d1d;
+  font-size: 17px;
+  line-height: 1.8;
   transition: opacity .4s ease;
 }
 
@@ -115,17 +125,38 @@ body {
   top: -10px;
   font-size: 18px;
   animation: fall linear infinite;
+  z-index: 2;
 }
 
 @keyframes fall {
   to { transform: translateY(110vh) rotate(360deg); }
 }
+
+/* ===== MOBILE ===== */
+@media (max-width: 768px) {
+  .envelope {
+    width: 90vw;
+    height: calc(90vw * 0.65);
+  }
+
+  .paper {
+    width: 85vw;
+    left: 2.5vw;
+    padding: 24px;
+  }
+
+  .message {
+    font-size: 18px;
+  }
+}
 </style>
 </head>
 <body>
 
-<div class="firework-bg" id="fireworks"></div>
+<!-- FIREWORKS -->
+<div class="fireworks" id="fireworks"></div>
 
+<!-- ENVELOPE -->
 <div class="envelope" id="envelope">
   <div class="env-flap"></div>
   <div class="paper">
@@ -136,25 +167,24 @@ body {
 </div>
 
 <script>
-/* BACKGROUND FIREWORKS */
-const fwBg = document.getElementById('fireworks');
+/* ===== FIREWORK LOOP ===== */
+const fw = document.getElementById('fireworks');
 setInterval(() => {
   const f = document.createElement('span');
-  f.style.left = Math.random()*100 + 'vw';
-  f.style.top = Math.random()*60 + 'vh';
-  f.style.setProperty('--h', Math.random()*360);
-  fwBg.appendChild(f);
+  f.style.left = Math.random() * 100 + 'vw';
+  f.style.top = Math.random() * 60 + 'vh';
+  f.style.setProperty('--h', Math.random() * 360);
+  fw.appendChild(f);
   setTimeout(() => f.remove(), 2000);
-}, 500);
+}, 600);
 
-/* MESSAGE LOGIC */
+/* ===== MESSAGE LOGIC ===== */
 const messages = [
-  "Selamat tahun baru ❤️",
-  "Terima kasih sudah hadir di hidupku.",
-  "Banyak hal berubah sejak kamu ada.",
-  "Dan aku bersyukur, itu kamu.",
-  "Aku ingin melangkah ke tahun berikutnya bersamamu."
+  "Selamat tahun baru, sayanggku, cintaaku, manisku, comelku, cantikku, bocilku ❤️",
+  "Sejak kita bersama beberapa bulan terakhir, aku mulai menyadari bahwa hal-hal sederhana terasa jauh lebih hangat ketika dijalani dengan kamu.",
+  "Aku berharap tahun ini bisa kita jalani pelan-pelan, saling mengenal lebih dalam, dan menikmati setiap proses kecil yang kita lewati bersama."
 ];
+
 
 let opened = false;
 let index = 0;
@@ -180,10 +210,10 @@ envelope.addEventListener('click', () => {
   }
 });
 
-/* FLOWERS */
+/* ===== FLOWERS ===== */
 function launchFlowers() {
   const flowers = ['🌸','🌷','🌼'];
-  for (let i = 0; i < 25; i++) {
+  for (let i = 0; i < 24; i++) {
     const fl = document.createElement('div');
     fl.className = 'flower';
     fl.innerText = flowers[Math.floor(Math.random()*flowers.length)];
